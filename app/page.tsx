@@ -59,7 +59,7 @@ export default async function Home() {
                 {/* <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Pain Score</th> */}
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                   <div className="flex items-center">Pain Score<MethodologyModal /></div>
-                </th> */}
+                </th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Price</th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">% From ATH</th>
               </tr>
