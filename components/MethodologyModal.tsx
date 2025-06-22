@@ -53,7 +53,7 @@ export default function MethodologyModal() {
                                         <p>Currently, the score is primarily calculated based on:</p>
                                         <ul className="list-disc list-inside space-y-1">
                                             <li><span className="font-semibold">Recent Price Volatility:</span> A weighted average of price drops over 24-hour, 7-day, and 30-day periods.</li>
-                                            <li><span className="font-semibold">Panic Bonus:</span> Extra points are added for sharp, sudden drops (e.g., >10% in 24h) to reflect market panic.</li>
+                                            <li><span className="font-semibold">Panic Bonus:</span> Extra points are added for sharp, sudden drops (e.g., &gt;10% in 24h) to reflect market panic.</li>
                                         </ul>
                                         <p className="mt-2 text-xs italic">Disclaimer: This is an experimental tool for entertainment and should not be considered financial advice. DYOR.</p>
                                     </div>
