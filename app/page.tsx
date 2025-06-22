@@ -21,7 +21,8 @@ const getPainColor = (score: number): string => {
 
 async function getLeaderboardData(): Promise<Asset[]> {
   try {
-    const res = await fetch('http://127.0.0.1:8000/api/leaderboard', { cache: 'no-store' });
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+    const res = await fetch(`${apiUrl}/api/leaderboard`, { cache: 'no-store' });
     if (!res.ok) {
       console.error("Failed to fetch from backend, status:", res.status);
       return [];
