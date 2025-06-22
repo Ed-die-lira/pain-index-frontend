@@ -71,7 +71,13 @@ export default async function Home() {
                     <td className="px-6 py-4 whitespace-nowrap font-bold">{asset.rank}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <img className="h-6 w-6 rounded-full mr-3 object-contain" src={asset.logo_url} alt={`${asset.name} logo`} />
+                        <div className="flex-shrink-0 h-8 w-8 mr-3">
+                          <img
+                            className="h-full w-full rounded-full object-contain"
+                            src={asset.logo_url}
+                            alt={`${asset.name} logo`}
+                          />
+                        </div>
                         <div>
                           <div className="font-bold">{asset.name}</div>
                           <div className="text-sm text-gray-500 dark:text-gray-400">{asset.symbol.toUpperCase()}</div>

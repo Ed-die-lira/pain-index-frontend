@@ -2,8 +2,11 @@
 
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
+// Importe o ícone diretamente da biblioteca
+import { QuestionMarkCircleIcon } from '@heroicons/react/24/solid'
 
 export default function MethodologyModal() {
+    // ... (o código de useState e as funções open/closeModal continuam iguais) ...
     const [isOpen, setIsOpen] = useState(false)
 
     function closeModal() {
@@ -20,16 +23,17 @@ export default function MethodologyModal() {
                 <button
                     type="button"
                     onClick={openModal}
-                    className="ml-2 rounded-full bg-gray-200 dark:bg-gray-700 p-1 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none"
+                    className="ml-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none"
                     title="How is Pain Score calculated?"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                    {/* Use o componente de ícone aqui */}
+                    <QuestionMarkCircleIcon className="h-5 w-5" />
                 </button>
             </div>
 
+            {/* O resto do código do Modal continua exatamente igual */}
             <Transition appear show={isOpen} as={Fragment}>
+                {/* ... (código do Dialog, Transition.Child, etc) ... */}
                 <Dialog as="div" className="relative z-10" onClose={closeModal}>
                     {/* O overlay escuro */}
                     <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
@@ -48,8 +52,8 @@ export default function MethodologyModal() {
                                         <p><strong className="text-gray-900 dark:text-white">A higher score means more "pain"</strong>, potentially indicating a better contrarian buying opportunity.</p>
                                         <p>Currently, the score is primarily calculated based on:</p>
                                         <ul className="list-disc list-inside space-y-1">
-                                            <li><span className="font-semibold">% Drawdown from All-Time High:</span> This is the most significant factor. The larger the drop, the higher the pain.</li>
-                                            <li><span className="font-semibold">Recent Price Volatility:</span> Sharp recent drops (like the 24h change) are used to amplify the score, simulating immediate panic.</li>
+                                            <li><span className="font-semibold">Recent Price Volatility:</span> A weighted average of price drops over 24-hour, 7-day, and 30-day periods.</li>
+                                            <li><span className="font-semibold">Panic Bonus:</span> Extra points are added for sharp, sudden drops (e.g., >10% in 24h) to reflect market panic.</li>
                                         </ul>
                                         <p className="mt-2 text-xs italic">Disclaimer: This is an experimental tool for entertainment and should not be considered financial advice. DYOR.</p>
                                     </div>
