@@ -1,15 +1,12 @@
-@import "tailwindcss";
+/* 1. Importa os estilos base do Tailwind da forma correta */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* 2. Mantém as suas variáveis de tema para light/dark mode */
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +17,7 @@
 }
 
 body {
-  background: var(--background);
+  /* Nós vamos deixar o Tailwind gerenciar isso, mas manteremos o fallback */
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background);
 }
