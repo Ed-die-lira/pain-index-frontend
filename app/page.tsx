@@ -1,4 +1,5 @@
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
+import MethodologyModal from '@/components/MethodologyModal';
 
 // O tipo no TS deve corresponder ao Pydantic no Python
 type Asset = {
@@ -55,7 +56,10 @@ export default async function Home() {
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Rank</th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Asset</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Pain Score</th>
+                {/* <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Pain Score</th> */}
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                  <div className="flex items-center">Pain Score<MethodologyModal /></div>
+                </th> */}
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Price</th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">% From ATH</th>
               </tr>
