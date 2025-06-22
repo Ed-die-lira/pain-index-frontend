@@ -27,7 +27,7 @@ export default function MethodologyModal() {
                     title="How is Pain Score calculated?"
                 >
                     {/* Use o componente de ícone aqui */}
-                    <QuestionMarkCircleIcon className="h-5 w-5" />
+                    [?]
                 </button>
             </div>
 
