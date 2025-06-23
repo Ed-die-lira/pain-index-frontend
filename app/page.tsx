@@ -1,5 +1,6 @@
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
 import MethodologyModal from '@/components/MethodologyModal';
+import Image from 'next/image';
 
 // O tipo no TS deve corresponder ao Pydantic no Python
 type Asset = {
@@ -71,10 +72,12 @@ export default async function Home() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-8 w-8 mr-3">
-                          <img
-                            className="h-full w-full rounded-full object-contain"
+                          <Image
+                            className="rounded-full object-contain"
                             src={asset.logo_url}
                             alt={`${asset.name} logo`}
+                            width={32}  // Tamanho em pixels (w-8)
+                            height={32} // Tamanho em pixels (h-8)
                           />
                         </div>
                         <div>
