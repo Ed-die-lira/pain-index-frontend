@@ -49,7 +49,7 @@ export default function MethodologyModal() {
                                     </Dialog.Title>
                                     <div className="mt-4 space-y-3 text-sm text-gray-600 dark:text-gray-300">
                                         <p>The Pain Score is a proprietary metric (from 0 to 100) designed to quantify market capitulation and fear for a specific crypto asset.</p>
-                                        <p><strong className="text-gray-900 dark:text-white">A higher score means more `pain`</strong>, potentially indicating a better contrarian buying opportunity.</p>
+                                        <p><strong className="text-gray-900 dark:text-white">A higher score means more pain</strong>, potentially indicating a better contrarian buying opportunity.</p>
                                         <p>Currently, the score is primarily calculated based on:</p>
                                         <ul className="list-disc list-inside space-y-1">
                                             <li><span className="font-semibold">Recent Price Volatility:</span> A weighted average of price drops over 24-hour, 7-day, and 30-day periods.</li>
