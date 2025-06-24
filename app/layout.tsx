@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { ThemeProvider } from '@/providers/ThemeProvider' // A importação continua a mesma
+import { ThemeProvider } from 'next-themes' // Importa diretamente aqui
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,8 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        {/* Agora só precisamos envolver os children, sem passar props */}
-        <ThemeProvider>
+        <ThemeProvider attribute="class" defaultTheme="dark">
           {children}
         </ThemeProvider>
       </body>
