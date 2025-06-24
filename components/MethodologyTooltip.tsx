@@ -19,7 +19,7 @@ const MethodologyContent = () => (
                     <strong>Recent Volatility:</strong> A weighted average of price drops over 24h, 7d, and 30d periods.
                 </li>
                 <li>
-                    <strong>Panic Bonus:</strong> Extra points are added for sharp, sudden drops (>10% in 24h).
+                    <strong>Panic Bonus:</strong> Extra points are added for sharp, sudden drops (&gt;10% in 24h).
                 </li>
             </ul>
             <p className="mt-2 text-xs italic">
