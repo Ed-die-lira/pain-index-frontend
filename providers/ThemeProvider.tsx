@@ -1,8 +1,24 @@
 'use client'
 
+import * as React from 'react'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
-import type { ThemeProviderProps } from 'next-themes/dist/types'
 
-export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-    return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+// Nós não precisamos mais do 'ThemeProviderProps' aqui.
+// O tipo para 'children' já é conhecido pelo React.
+interface ThemeProviderProps {
+    children: React.ReactNode;
+}
+
+export function ThemeProvider({ children }: ThemeProviderProps) {
+    // Passamos as propriedades diretamente aqui, sem precisar do tipo complexo.
+    return (
+        <NextThemesProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+        >
+            {children}
+        </NextThemesProvider>
+    )
 }

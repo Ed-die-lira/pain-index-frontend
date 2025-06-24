@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-// 1. Importe o nosso novo componente de provedor
-import { ThemeProvider } from '@/providers/ThemeProvider'
+import { ThemeProvider } from '@/providers/ThemeProvider' // A importação continua a mesma
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,13 +18,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        {/* 2. Use nosso componente aqui. Ele já tem o 'use client' */}
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
+        {/* Agora só precisamos envolver os children, sem passar props */}
+        <ThemeProvider>
           {children}
         </ThemeProvider>
       </body>
