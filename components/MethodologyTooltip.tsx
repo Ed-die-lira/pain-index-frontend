@@ -12,7 +12,7 @@ const MethodologyContent = () => (
         <div className="space-y-2">
             <p>
                 The Pain Score (0-100) quantifies market fear.
-                <strong className="block mt-1">A higher score means more "pain".</strong>
+                <strong className="block mt-1">A higher score means more pain.</strong>
             </p>
             <ul className="list-disc list-inside space-y-1">
                 <li>
