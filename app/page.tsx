@@ -1,116 +1,133 @@
-import { ThemeSwitcher } from '@/components/ThemeSwitcher'
-import MethodologyTooltip from '@/components/MethodologyTooltip';
-import Image from 'next/image';
+'use client' // <<< TORNAMOS A PÁGINA INTEIRA UM CLIENT COMPONENT PARA O TESTE
 
-// O tipo no TS deve corresponder ao Pydantic no Python
+import { useState, useEffect } from 'react';
+
+// --- COMPONENTE TOOLTIP MANUAL ---
+const Tooltip = ({ children, content }: { children: React.ReactNode, content: React.ReactNode }) => {
+  const [show, setShow] = useState(false);
+  return (
+    <div
+      className="relative flex items-center"
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}
+    >
+      {children}
+      {show && (
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-gray-800 dark:bg-gray-700 text-white text-sm rounded-lg shadow-lg z-10">
+          {content}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// --- Tipos e Funções de Dados (iguais a antes) ---
 type Asset = {
-  rank: number
-  id: string
-  name: string
-  symbol: string
-  price: number // TypeScript usa 'number' para float e int
-  percent_from_ath: number
-  pain_score: number
-  logo_url: string
+  rank: number, id: string, name: string, symbol: string, price: number,
+  percent_from_ath: number, pain_score: number, logo_url: string
 }
+const getPainColor = (score: number): string => { /* ... mesma função de antes ... */ return "" };
+async function getLeaderboardData(): Promise<Asset[]> { /* ... mesma função de antes ... */ return [] };
 
-const getPainColor = (score: number): string => {
-  if (score > 80) return 'bg-red-200 dark:bg-red-900/50 text-red-800 dark:text-red-200'
-  if (score > 60) return 'bg-orange-200 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200'
-  if (score > 40) return 'bg-yellow-200 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200'
-  return 'bg-green-200 dark:bg-green-900/50 text-green-800 dark:text-green-200'
-}
 
-async function getLeaderboardData(): Promise<Asset[]> {
-  try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-    const res = await fetch(`${apiUrl}/api/leaderboard`, { cache: 'no-store' });
-    if (!res.ok) {
-      console.error("Failed to fetch from backend, status:", res.status);
-      return [];
+// --- PÁGINA PRINCIPAL ---
+export default function Home() {
+  const [assets, setAssets] = useState<Asset[]>([]);
+  const [theme, setTheme] = useState('dark');
+
+  // Lógica para carregar os dados no cliente
+  useEffect(() => {
+    // Definimos a função aqui dentro para usar o 'process.env' do cliente
+    async function fetchData() {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+        const res = await fetch(`${apiUrl}/api/leaderboard`);
+        if (res.ok) {
+          const data = await res.json();
+          setAssets(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch assets:", error);
+      }
     }
-    return res.json();
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return [];
-  }
-}
+    fetchData();
+  }, []);
 
-export default async function Home() {
-  const assets = await getLeaderboardData();
+  // Lógica para trocar o tema manualmente
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(currentTheme => (currentTheme === 'dark' ? 'light' : 'dark'));
+  };
+
+  // Preenche a cor do pain score (código duplicado para simplificar)
+  const getPainColor = (score: number): string => {
+    if (score > 80) return 'bg-red-200 dark:bg-red-900/50 text-red-800 dark:text-red-200'
+    if (score > 60) return 'bg-orange-200 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200'
+    if (score > 40) return 'bg-yellow-200 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200'
+    return 'bg-green-200 dark:bg-green-900/50 text-green-800 dark:text-green-200'
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-gray-100">
       <header className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-800">
         <div>
-          {/* Removi o emoji como medida de segurança contra erros de codificação de caracteres */}
           <h1 className="text-2xl font-bold">The Pain Index</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400">Where Degens Find Their Next Max Long.</p>
         </div>
-        <ThemeSwitcher />
+        <button onClick={toggleTheme} className="px-4 py-2 border rounded-lg">
+          Toggle Theme ({theme})
+        </button>
       </header>
 
       <main className="container mx-auto p-4">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <table className="min-w-full">
             <thead className="bg-gray-100 dark:bg-gray-800">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Rank</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Asset</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  <div className="flex items-center">Pain Score<MethodologyTooltip /></div>
+                <th>Rank</th>
+                <th>Asset</th>
+                <th className="flex justify-center items-center">
+                  <Tooltip content={
+                    <div>
+                      <h3 className="font-bold">Pain Score Logic</h3>
+                      <p className="text-xs">Based on a weighted average of 24h, 7d, and 30d price drops. Higher is more pain.</p>
+                    </div>
+                  }>
+                    <span className="mr-1">Pain Score</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  </Tooltip>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Price</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">% From ATH</th>
+                <th>Price</th>
+                <th>% From ATH</th>
               </tr>
             </thead>
-            <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-              {assets && assets.length > 0 ? (
-                assets.map((asset) => (
-                  <tr key={asset.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                    <td className="px-6 py-4 whitespace-nowrap font-bold">{asset.rank}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-8 w-8 mr-3">
-                          <Image
-                            className="rounded-full object-contain"
-                            src={asset.logo_url}
-                            alt={`${asset.name} logo`}
-                            width={32}  // Tamanho em pixels (w-8)
-                            height={32} // Tamanho em pixels (h-8)
-                          />
-                        </div>
-                        <div>
-                          <div className="font-bold">{asset.name}</div>
-                          <div className="text-sm text-gray-500 dark:text-gray-400">{asset.symbol.toUpperCase()}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-3 py-1 text-sm font-semibold rounded-full ${getPainColor(asset.pain_score)}`}>
-                        {asset.pain_score}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">${asset.price.toLocaleString()}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-red-500 font-medium">{asset.percent_from_ath.toFixed(1)}%</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5} className="text-center py-8">
-                    Loading data or failed to connect to backend... Make sure the backend server is running.
+            <tbody>
+              {assets.map((asset) => (
+                <tr key={asset.id} className="text-center border-b border-gray-200 dark:border-gray-700">
+                  <td>{asset.rank}</td>
+                  <td>{asset.name} ({asset.symbol})</td>
+                  <td>
+                    <span className={`px-2 py-1 rounded-full text-xs font-bold ${getPainColor(asset.pain_score)}`}>
+                      {asset.pain_score}
+                    </span>
+                  </td>
+                  <td>${asset.price.toLocaleString()}</td>
+                  <td className={asset.percent_from_ath < 0 ? 'text-red-500' : 'text-green-500'}>
+                    {asset.percent_from_ath.toFixed(1)}%
                   </td>
                 </tr>
-              )}
+              ))}
             </tbody>
           </table>
         </div>
-        <footer className="text-center mt-8 p-4 border-t border-gray-200 dark:border-gray-800">
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            This is not financial advice. This is a statistical tool for degenerates. You will probably lose all your money. DYOR.
-          </p>
-        </footer>
       </main>
     </div>
-  )
+  );
 }
