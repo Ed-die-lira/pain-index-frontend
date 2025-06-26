@@ -26,9 +26,13 @@ type Asset = {
   rank: number, id: string, name: string, symbol: string, price: number,
   percent_from_ath: number, pain_score: number, logo_url: string
 }
-const getPainColor = (score: number): string => { /* ... mesma função de antes ... */ return "" };
-async function getLeaderboardData(): Promise<Asset[]> { /* ... mesma função de antes ... */ return [] };
 
+const getPainColor = (score: number): string => {
+  if (score > 80) return 'bg-red-200 dark:bg-red-900/50 text-red-800 dark:text-red-200';
+  if (score > 60) return 'bg-orange-200 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200';
+  if (score > 40) return 'bg-yellow-200 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200';
+  return 'bg-green-200 dark:bg-green-900/50 text-green-800 dark:text-green-200';
+};
 
 // --- PÁGINA PRINCIPAL ---
 export default function Home() {
@@ -64,14 +68,6 @@ export default function Home() {
 
   const toggleTheme = () => {
     setTheme(currentTheme => (currentTheme === 'dark' ? 'light' : 'dark'));
-  };
-
-  // Preenche a cor do pain score (código duplicado para simplificar)
-  const getPainColor = (score: number): string => {
-    if (score > 80) return 'bg-red-200 dark:bg-red-900/50 text-red-800 dark:text-red-200'
-    if (score > 60) return 'bg-orange-200 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200'
-    if (score > 40) return 'bg-yellow-200 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200'
-    return 'bg-green-200 dark:bg-green-900/50 text-green-800 dark:text-green-200'
   };
 
   return (
